@@ -1,7 +1,17 @@
+# SPDX-FileCopyrightText: Copyright 2024 shadPS4 Emulator Project
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 id: com.shadps4.Emulator
 runtime: org.kde.Platform
 runtime-version: '6.8'
 sdk: org.kde.Sdk
+add-extensions:
+  org.freedesktop.Platform.ffmpeg-full:
+    version: '24.08'
+    directory: lib/ffmpeg
+    add-ld-path: .
+cleanup-commands:
+  - mkdir -p ${FLATPAK_DEST}/lib/ffmpeg
 command: shadps4
 rename-icon: shadps4
 rename-desktop-file: shadps4.desktop
@@ -12,6 +22,8 @@ finish-args:
   - --socket=fallback-x11
   - --allow=bluetooth
   - --filesystem=home
+  - --filesystem=/media
+  - --filesystem=/run/media
   - --device=dri
   - --device=input
 modules:
@@ -24,6 +36,8 @@ modules:
       - type: git
         url: https://github.com/Tencent/rapidjson.git
         commit: 858451e5b7d1c56cf8f6d58f88cf958351837e53
+    cleanup:
+      - '*'
   - name: libfmt
     buildsystem: cmake
     config-opts:
@@ -32,6 +46,8 @@ modules:
       - type: git
         url: https://github.com/fmtlib/fmt.git
         commit: 56ce41ef6368dfbe7d6aefe19d20365bd601a3b0
+    cleanup:
+      - '*'
   - name: shadPS4
     buildsystem: cmake
     builddir: true
