@@ -396,14 +396,14 @@ jobs:
         submodules: recursive
     - uses: flatpak/flatpak-github-actions/flatpak-builder@master
       with:
-        manifest-path: com.shadps4emu.ShadPS4.yaml
+        manifest-path: net.shadps4.shadPS4.yaml
         cache-key: flatpak-builder-${{ github.sha }}
         bundle: shadps4.flatpak
         upload-artifact: false
     - uses: actions/upload-artifact@v4
       with:
         path: shadps4.flatpak
-        name: shadps4-linux-${{ needs.get-info.outputs.date }}-${{ needs.get-info.outputs.shorthash }}.flatpak
+        name: shadps4-linux-flatpak-${{ needs.get-info.outputs.date }}-${{ needs.get-info.outputs.shorthash }}
 
   pre-release:
     if: github.ref == 'refs/heads/main' && github.repository == 'shadps4-emu/shadPS4' && github.event_name == 'push'
