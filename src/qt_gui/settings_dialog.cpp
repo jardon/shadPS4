@@ -6,7 +6,9 @@
 #include <QHoverEvent>
 
 #include <common/version.h>
+#ifdef ENABLE_UPDATER
 #include "check_update.h"
+#endif
 #include "common/logging/backend.h"
 #include "common/logging/filter.h"
 #include "main_window.h"
@@ -143,6 +145,7 @@ SettingsDialog::SettingsDialog(std::span<const QString> physical_devices, QWidge
         connect(ui->logFilterLineEdit, &QLineEdit::textChanged, this,
                 [](const QString& text) { Config::setLogFilter(text.toStdString()); });
 
+#ifdef ENABLE_UPDATER
         connect(ui->updateCheckBox, &QCheckBox::stateChanged, this,
                 [](int state) { Config::setAutoUpdate(state == Qt::Checked); });
 
@@ -153,6 +156,12 @@ SettingsDialog::SettingsDialog(std::span<const QString> physical_devices, QWidge
             auto checkUpdate = new CheckUpdate(true);
             checkUpdate->exec();
         });
+#else
+        // FIXME Can we do better than this?
+        ui->updateCheckBox->setEnabled(false);
+        ui->updateComboBox->setEnabled(false);
+        ui->checkUpdateButton->setEnabled(false);
+#endif
 
         connect(ui->playBGMCheckBox, &QCheckBox::stateChanged, this, [](int val) {
             Config::setPlayBGM(val);
