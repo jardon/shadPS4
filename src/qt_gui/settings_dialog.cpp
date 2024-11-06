@@ -158,9 +158,10 @@ SettingsDialog::SettingsDialog(std::span<const QString> physical_devices, QWidge
         });
 #else
         // FIXME Can we do better than this?
-        ui->updateCheckBox->setEnabled(false);
-        ui->updateComboBox->setEnabled(false);
-        ui->checkUpdateButton->setEnabled(false);
+        // ui->updateCheckBox->setEnabled(false);
+        // ui->updateComboBox->setEnabled(false);
+        // ui->checkUpdateButton->setEnabled(false);
+        ui->generalTabVLayout->removeItem(ui->generalTabHLayout_2);
 #endif
 
         connect(ui->playBGMCheckBox, &QCheckBox::stateChanged, this, [](int val) {
